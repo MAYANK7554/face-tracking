@@ -52,7 +52,6 @@ export default function Home() {
 
   // Face tracking and drawing
   useEffect(() => {
-    let interval: NodeJS.Timeout;
     async function trackFace() {
       if (!videoRef.current || !canvasRef.current || loading || modelError) return;
       const ctx = canvasRef.current.getContext("2d");
@@ -73,7 +72,7 @@ export default function Home() {
         setFaceFound(false);
       }
     }
-    interval = setInterval(trackFace, 100);
+    const interval = setInterval(trackFace, 100);
     return () => clearInterval(interval);
   }, [loading, modelError]);
 
@@ -82,7 +81,7 @@ export default function Home() {
     if (!canvasRef.current) return;
     const stream = canvasRef.current.captureStream();
     const recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
-    let chunks: Blob[] = [];
+    const chunks: Blob[] = [];
     recorder.ondataavailable = e => chunks.push(e.data);
     recorder.onstop = () => {
       const blob = new Blob(chunks, { type: "video/webm" });
@@ -107,7 +106,6 @@ export default function Home() {
       {/* Header Bar */}
       <header className="w-full bg-blue-600 text-white py-4 shadow flex justify-center items-center mb-6">
         <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-          {/* Removed any Next.js or Vercel SVG logo from header */}
           Face Tracking & Video Recorder
         </h1>
       </header>
